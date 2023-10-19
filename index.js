@@ -27,7 +27,15 @@ async function run() {
     await client.connect();
 
     const productCollection =client.db("productDB").collection("product")
+    const addCartCollection =client.db("cartDB").collection("cart")
 
+    app.post('/carts',async(req,res)=>{
+        const cart =req.body
+        console.log(cart)
+        const result =await addCartCollection.insertOne(cart)
+        console.log(result)
+        res.send(result)
+    })
     app.post('/products',async(req,res)=>{
         const product =req.body
         console.log(product)
@@ -35,6 +43,11 @@ async function run() {
         console.log(result)
         res.send(result)
     })
+    app.get('/carts',async(req,res)=>{  
+      const result =await addCartCollection.find().toArray()
+      console.log(result)
+      res.send(result)
+  })
     app.get('/products',async(req,res)=>{  
       const result =await productCollection.find().toArray()
       console.log(result)
@@ -50,7 +63,8 @@ async function run() {
   app.put('/products/:id',async(req,res)=>{
     const id =req.params.id
     const data =req.body
-      const filter ={_id: new ObjectId(id) }
+
+    const filter ={_id: new ObjectId(id) }
     const options ={upsert:true}
     const updatedData ={
       $set:{
@@ -58,11 +72,12 @@ async function run() {
         name:data.name,
         price:data.price,
         description:data.description,
-         brand:data.brand,
-         type:data.type,
-          rating:data.rating
+        brand:data.brand,
+        type:data.type,
+        rating:data.rating
       }
     }
+
     const result =await productCollection.updateOne(filter,updatedData,options)
     res.send(result)
 })
