@@ -33,47 +33,47 @@ async function run() {
         const cart =req.body
         console.log(cart)
         const result =await addCartCollection.insertOne(cart)
-        console.log(result)
+      
         res.send(result)
     })
     app.post('/products',async(req,res)=>{
         const product =req.body
         console.log(product)
         const result =await productCollection.insertOne(product)
-        console.log(result)
+    
         res.send(result)
     })
     app.get('/carts',async(req,res)=>{  
       const result =await addCartCollection.find().toArray()
-      console.log(result)
+    
       res.send(result)
   })
     app.get('/products',async(req,res)=>{  
       const result =await productCollection.find().toArray()
-      console.log(result)
+  
       res.send(result)
   })
   app.get('/products/:id',async(req,res)=>{
     const id =req.params.id
     const query ={_id: new ObjectId(id)}
     const result =await productCollection.findOne(query)
-    console.log(result)
+   
     res.send(result)
   })
   app.get('/carts/:id',async(req,res)=>{
     const id =req.params.id
     const query ={_id: new ObjectId(id)}
     const result =await addCartCollection.findOne(query)
-    console.log(result)
+  
     res.send(result)
   })
  
   app.delete("/carts/:id", async(req, res) => {
     const id = req.params.id;
-    console.log(id);
+    
     const query = { _id: new ObjectId(id) };
     const result = await addCartCollection.deleteOne(query);
-    console.log(result)
+   
     res.send(result);
   });
   app.put('/products/:id',async(req,res)=>{
